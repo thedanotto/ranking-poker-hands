@@ -2,6 +2,14 @@ require "spec_helper"
 require "game"
 
 describe Game do
+  describe "#create_hand_objects" do
+    it "should turn the array of hand objects" do
+      new_game = Game.new(number_of_players: 2, number_of_cards_per_hand: 5)
+      hand_objects = new_game.create_hand_objects(hands: [["AH", "AC"], ["QD","5C"]])
+      expect(hand_objects.first.cards).to eq(["AH", "AC"])
+    end
+  end
+
   describe "#create_hands" do
     it "should create an array with empty arrays equal to the number of players" do
       new_game = Game.new(number_of_players: 2, number_of_cards_per_hand: 5)

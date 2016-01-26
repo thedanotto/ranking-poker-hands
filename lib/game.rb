@@ -35,13 +35,21 @@ class Game
   end
 
   
-  def deal_hands
-    self.fill_hands
-    
+  def create_hand_objects(hands: self.fill_hands)
+    hand_objects = []
+    hands.each do |hand|
+      hand_objects << Hand.new(hand) 
+    end
+    return hand_objects
   end
 
   def evaluate_winner
-
+    hands = self.create_hand_objects
+    hand_evaluation = EvaluateHand.new(hands[0], hands[1])
+    hand_evaluation.winner
+    hand_evaluation.winner_hand
+    hand_evaluation.loser
+    hand_evaluation.loser_hand
   end
 
   def play_hand
