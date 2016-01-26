@@ -6,7 +6,7 @@ describe Game do
     it "should create an array with empty arrays equal to the number of players" do
       new_game = Game.new(number_of_players: 2, number_of_cards_per_hand: 5)
       
-      expect(new_game.create_hands).to eq([[],[]])
+      expect(new_game.initiate_empty_hands).to eq([[],[]])
     end
   end
 

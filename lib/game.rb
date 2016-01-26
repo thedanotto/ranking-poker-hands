@@ -9,7 +9,7 @@ class Game
     @number_of_cards_per_hand = number_of_cards_per_hand
   end
 
-  def create_hands
+  def initiate_empty_hands
     @hands = Array.new(self.number_of_players) 
     self.number_of_players.times do |num|
       @hands[num] = []
@@ -19,7 +19,7 @@ class Game
   
   def fill_hands
     prepare_deck
-    create_hands
+    initiate_empty_hands
     self.number_of_cards_per_hand.times do |card_num|
       self.number_of_players.times do |num|
 	@hands[num][card_num] = @deck.deal_card
@@ -36,7 +36,8 @@ class Game
 
   
   def deal_hands
-
+    self.fill_hands
+    
   end
 
   def evaluate_winner
