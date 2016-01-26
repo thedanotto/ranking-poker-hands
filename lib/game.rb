@@ -1,10 +1,11 @@
 class Game
-  require_relative 'hand'
   require_relative 'deck'
-  
+  require_relative 'hand'
+  require_relative 'hand_evaluator'
+
   attr_accessor :number_of_players, :number_of_cards_per_hand
 
-  def initialize(number_of_players:, number_of_cards_per_hand:)
+  def initialize(number_of_players: 2, number_of_cards_per_hand: 5)
     @number_of_players = number_of_players
     @number_of_cards_per_hand = number_of_cards_per_hand
   end
@@ -43,17 +44,21 @@ class Game
     return hand_objects
   end
 
-  def evaluate_winner
+  def evaluate_winner(hand1, hand2)
+    # I want to decouple this from creating the hand objects
+    # I want to pass in the hand objects
     hands = self.create_hand_objects
-    hand_evaluation = EvaluateHand.new(hands[0], hands[1])
-    hand_evaluation.winner
-    hand_evaluation.winner_hand
-    hand_evaluation.loser
-    hand_evaluation.loser_hand
+    hand_evaluation = HandEvaluator.new(hands[0], hands[1])
+    #hand_evaluation.winner
+    #hand_evaluation.winner_hand
+    #hand_evaluation.loser
+    #hand_evaluation.loser_hand
+    "Player 1 wins"
   end
 
   def play_hand
-
+    hands = self.create_hand_objects
+    self.evaluate_winner(hands[0], hands[1])
   end
 
   def print_results

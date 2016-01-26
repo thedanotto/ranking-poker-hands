@@ -18,6 +18,14 @@ describe Game do
     end
   end
 
+  describe "#evalute_winner" do
+    it "should evaluate the winning hand, given two hands" do
+      new_game = Game.new
+
+      expect(new_game.evaluate_winner(["AH", "AC", "AD", "AS", "KH"], ["2H", "4H", "6D", "8C", "TD"])).to eq("Player 1")
+    end
+  end
+
   describe "#fill_hands" do
     it "should prepare hands equal to the number of players playing the game" do
       new_game = Game.new(number_of_players: 2, number_of_cards_per_hand: 5)
