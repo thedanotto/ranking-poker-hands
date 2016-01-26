@@ -3,6 +3,7 @@ class Hand
   
   def initialize(cards)
     @cards = cards
+    @number_of_cards = 5
   end
 
   def valid_hand?
