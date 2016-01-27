@@ -294,38 +294,23 @@ describe Hand do
     end
   end
 
-  describe "#occurances_in_pair" do
+  describe "#occurences_in_pair" do
     it "returns 4 for four of a kind" do
       hand = Hand.new(cards(:four_of_a_kind))
 
-      expect(hand.occurances_in_pair).to eq(4)
+      expect(hand.occurences_in_pair).to eq(4)
     end
 
     it "returns 3 for full house" do
       hand = Hand.new(cards(:full_house))
 
-      expect(hand.occurances_in_pair).to eq(3)
+      expect(hand.occurences_in_pair).to eq(3)
     end
 
     it "returns 2 for two pair" do
       hand = Hand.new(cards(:two_pair))
 
-      expect(hand.occurances_in_pair).to eq(2)
-    end
-  end
-
-
-  describe "#valid_hand?" do
-    it "a collection of 5 cards should be a hand" do
-      hand = Hand.new(["AS", "KD", "QH", "JC", "TD"])
-    
-      expect(hand.valid_hand?).to eq(true)
-    end
-
-    it "returns false when less than 5 cards are supplied" do
-      hand = Hand.new("")
-
-      expect(hand.valid_hand?).to eq(false)
+      expect(hand.occurences_in_pair).to eq(2)
     end
   end
 

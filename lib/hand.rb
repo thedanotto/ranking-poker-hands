@@ -5,6 +5,7 @@ class Hand
     @cards = cards
   end
 
+  # Utility Methods
   def individual_card_score(card:, ace_value: 14)
     card_rankings = {
       "A" =>  ace_value,
@@ -40,6 +41,15 @@ class Hand
     return card_scores
   end
 
+  def suits
+    suits = []
+    self.cards.each do |card|
+      suits << card[1]
+    end
+    return suits
+  end
+
+  # determine Hand Type
   def hand_type
     if straight_flush?
       "straight_flush"
@@ -130,10 +140,6 @@ class Hand
     end  
   end  
 
-   
-
-  # there has to be a way to write a method that just does all the kickers for everything...
-  # every hand should be a class, right?
   def kickers
     if two_pair?
       self.card_score_of_second_strongest_pair
@@ -160,35 +166,16 @@ class Hand
     end  
   end  
 
-  # straights, flushes, high card all take the highest card as their second score (done)
-  # foak, toak, tp, p, full_house all take their most paired card as their second score
-  # kicker 1 foak, toak, p all take their next highest card
-  # kicker 1 full_house, two_pair, all take their second pair as the kicker
-  # kicker 2 two_pair takes its remaining card, toak take its remaining card, pair takes its second highest card
-  # kicker 3 pair takes its last card as final determination
-
-  def suits
-    suits = []
-    self.cards.each do |card|
-      suits << card[1]
-    end
-    return suits
-  end
-  
-  def valid_hand?
-    self.cards.length == 5
-  end
-
   def straight_flush?
     self.flush? && self.straight?
   end 
 
   def four_of_a_kind?
-    number_of_pairs == 1 && occurances_in_pair == 4
+    number_of_pairs == 1 && occurences_in_pair == 4
   end 
 
   def full_house?
-    number_of_pairs == 2 && occurances_in_pair == 3
+    number_of_pairs == 2 && occurences_in_pair == 3
   end 
 
   def flush?
@@ -200,33 +187,35 @@ class Hand
   end 
   
   def three_of_a_kind?
-    number_of_pairs == 1 && occurances_in_pair == 3
+    number_of_pairs == 1 && occurences_in_pair == 3
   end 
 
   def two_pair?
-    number_of_pairs == 2 && occurances_in_pair == 2
+    number_of_pairs == 2 && occurences_in_pair == 2
   end 
 
   def pair?
-    number_of_pairs == 1 && occurances_in_pair == 2
+    number_of_pairs == 1 && occurences_in_pair == 2
   end 
 
   def high_card?
     number_of_pairs == 0 && !flush? && !straight?
   end 
 
+  def card_occurences
+    self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+  end
+
   def number_of_pairs
-    card_occurences = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
-    instances_of_pairs = card_occurences.to_a.select do |arr|
+    instances_of_pairs = self.card_occurences.to_a.select do |arr|
       arr[1] > 1
     end
     instances_of_pairs.count
   end
 
-  def occurances_in_pair
+  def occurences_in_pair
     instances = []
-    card_occurances = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
-    card_occurances.each do |arr|
+    self.card_occurences.each do |arr|
       instances << arr[1]
     end
     instances.max
@@ -234,9 +223,8 @@ class Hand
 
 
   def most_highly_paired_card_score
-    card_occurances = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
-    # grabs the ["card_value", "occurances"]
-    max = card_occurances.max_by do |k, v|
+    # grabs the ["card_value", "occurences"]
+    max = self.card_occurences.max_by do |k, v|
       v
     end
 
