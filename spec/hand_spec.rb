@@ -20,6 +20,50 @@ describe Hand do
   end
   # all the tests for the hand
 
+  describe "#hand_type" do
+    it "should return 'straight_flush' for hand_type" do
+      hand = Hand.new(cards(:straight_flush))
+
+      expect(hand.hand_type).to eq("straight_flush")
+    end
+
+    it "should return 'high_card' when nothing matches" do
+      hand = Hand.new(cards(:high_card))
+
+      expect(hand.hand_type).to eq("high_card")
+    end
+  end
+
+  describe "#hand_score" do
+    it "should return a score for all hand types" do
+      straight_flush = Hand.new(cards(:straight_flush))
+      four_of_a_kind = Hand.new(cards(:four_of_a_kind))
+      full_house = Hand.new(cards(:full_house))
+      flush = Hand.new(cards(:flush))
+      straight = Hand.new(cards(:straight))
+      three_of_a_kind = Hand.new(cards(:three_of_a_kind))
+      two_pair = Hand.new(cards(:two_pair))
+      pair = Hand.new(cards(:pair))
+      
+      expect(straight_flush.hand_score).to eq(8)
+      expect(four_of_a_kind.hand_score).to eq(7)
+      expect(full_house.hand_score).to eq(6)
+      expect(flush.hand_score).to eq(5)
+      expect(straight.hand_score).to eq(4)
+      expect(three_of_a_kind.hand_score).to eq(3)
+      expect(two_pair.hand_score).to eq(2)
+      expect(pair.hand_score).to eq(1)
+    end
+  end
+
+  describe "#hand_scores" do
+    it "should return [] with the hand_score inside" do
+      straight_flush = Hand.new(cards(:straight_flush))
+
+      expect(straight_flush.hand_scores).to eq([8])
+    end
+  end
+
   describe "#straight_flush?" do
     it "recognizes Straight Flushes!" do
       hand = Hand.new(cards(:straight_flush))

@@ -14,7 +14,46 @@ class Hand
   end
 
   def hand_type
-    
+    if straight_flush?
+      "straight_flush"
+    elsif four_of_a_kind?
+      "four_of_a_kind"
+    elsif full_house?
+      "full_house"
+    elsif flush?
+      "flush"
+    elsif straight?
+      "straight"
+    elsif three_of_a_kind?
+      "three_of_a_kind"
+    elsif two_pair?
+      "two_pair"
+    elsif pair?
+      "pair"
+    else
+      "high_card"
+    end
+  end
+
+  def hand_score(hand_type: self.hand_type)
+    scores = {
+      "straight_flush" =>  8,
+      "four_of_a_kind" =>  7,
+      "full_house" =>  6,
+      "flush" =>  5,
+      "straight" =>  4,
+      "three_of_a_kind" => 3,
+      "two_pair" => 2,
+      "pair" => 1,
+      "high_card" => 0
+    }
+
+    scores[hand_type]
+  end
+
+  def hand_scores
+    score_array = []
+    score_array << hand_score
   end
 
   def suits
