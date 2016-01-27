@@ -53,15 +53,26 @@ class Game
     #hand_evaluation.winner_hand
     #hand_evaluation.loser
     #hand_evaluation.loser_hand
-    "Player 1 wins"
+    
+    return hand_evaluation.return_stronger_hand
   end
 
   def play_hand
     hands = self.create_hand_objects
-    self.evaluate_winner(hands[0], hands[1])
+    winning_hand = self.evaluate_winner(hands[0], hands[1])
+    losing_hand = winning_hand == hands[0] ? hands[1] : hands[0]
+    if winning_hand == nil or losing_hand == nil
+    require 'pry'
+    binding.pry
+    end
+print_results(winning_hand, losing_hand)
   end
 
-  def print_results
+  def print_results(winning_hand, losing_hand)
+    
+        
+    puts "The winning hand is a #{winning_hand.hand_type} with the following cards #{winning_hand.cards}"
 
+    puts "The losing hand is a #{losing_hand.hand_type} with the following cards #{losing_hand.cards}"
   end
 end

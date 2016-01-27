@@ -22,7 +22,7 @@ describe Game do
     it "should evaluate the winning hand, given two hands" do
       new_game = Game.new
 
-      expect(new_game.evaluate_winner(["AH", "AC", "AD", "AS", "KH"], ["2H", "4H", "6D", "8C", "TD"])).to eq("Player 1")
+      expect(new_game.evaluate_winner(["AH", "AC", "AD", "AS", "KH"], ["2H", "4H", "6D", "8C", "TD"])).to eq("Player 1 wins")
     end
   end
 

@@ -73,6 +73,7 @@ class Hand
     score_array = []
     score_array << hand_score
     score_array << self.base_score
+    #score_array << self.kicker
   end
 
   def base_score
@@ -83,6 +84,10 @@ class Hand
     else
       self.card_rankings_sorted.max
     end
+  end
+
+  # there has to be a way to write a method that just does all the kickers for everything...
+  def kicker
   end
 
 
@@ -160,6 +165,7 @@ class Hand
 
   def most_highly_paired_card_score
     card_occurances = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    # grabs the ["card_value", "occurances"]
     max = card_occurances.max_by do |k, v|
       v
     end
