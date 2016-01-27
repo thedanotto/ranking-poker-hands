@@ -11,7 +11,7 @@ describe Hand do
       ace_high_straight: %w(AS TD JC QH KC),
       straight: %w(9S TS 8D 7S JS),
       ace_low_straight: %w(AS 2H 3D 5C 4S),
-      three_of_a_kind: %w(AC AS AD 3H 2D),
+      three_of_a_kind: %w(3C 3S AD 3H 2D),
       two_pair: %w(AC AS 3H 3D 2D),
       pair: %w(KC KD 3H JD TS),
       high_card: %w(KC QD TC 4D 5S)
@@ -60,7 +60,57 @@ describe Hand do
     it "should return [] with the hand_score inside" do
       straight_flush = Hand.new(cards(:straight_flush))
 
-      expect(straight_flush.hand_scores).to eq([8])
+      expect(straight_flush.hand_scores).to eq([8, 11])
+    end
+
+    it "expect it to recognize a straight with a low ace as a kicker with a 5" do
+      straight = Hand.new(cards(:ace_low_straight))
+
+      expect(straight.hand_scores).to eq([4, 5])
+    end
+
+    it "returns the value of the most paired card for full_house" do
+      full_house = Hand.new(cards(:full_house))
+
+      expect(full_house.hand_scores).to eq([6, 10])
+    end
+    it "returns card score of the four_of_a_kind" do
+      four_of_a_kind = Hand.new(cards(:four_of_a_kind))
+      
+      expect(four_of_a_kind.hand_scores).to eq([7, 10])
+    end
+    
+    it "returns card score of the four_of_a_kind" do
+      three_of_a_kind = Hand.new(cards(:three_of_a_kind))
+      
+      expect(three_of_a_kind.hand_scores).to eq([3, 3])
+    end
+
+    it "returns value of highest card in high card" do
+      high_card = Hand.new(cards(:high_card))
+
+      expect(high_card.hand_scores).to eq([0, 13])
+    end
+
+    it "returns value of highest card in flush" do
+      flush = Hand.new(cards(:flush))
+
+      expect(flush.hand_scores).to eq([5, 14])
+    end
+  end
+  describe "#most_highly_paired_card_score" do
+    it "should return the card score of the most highly paired card in hand" do
+      full_house = Hand.new(cards(:full_house))
+
+      expect(full_house.most_highly_paired_card_score).to eq(10)
+    end
+  end
+
+  describe "#individual_card_score" do
+    it "should give the score of a card when you give it the card" do
+      hand = Hand.new("")
+
+      expect(hand.individual_card_score(card:"T")).to eq(10)
     end
   end
 

@@ -1,6 +1,24 @@
 class Hand
   attr_accessor :cards
-  
+    def individual_card_score(card:, ace_value: 14)
+    card_rankings = {
+      "A" =>  ace_value,
+      "K" => 13,
+      "Q" =>  12,
+      "J" =>  11,
+      "T" =>  10,
+      "9" =>  9,
+      "8" => 8,
+      "7" => 7,
+      "6" => 6,
+      "5" => 5,
+      "4" => 4,
+      "3" => 3,
+      "2" => 2
+    }
+    card_rankings[card]
+    end
+ 
   def initialize(cards)
     @cards = cards
   end
@@ -54,7 +72,26 @@ class Hand
   def hand_scores
     score_array = []
     score_array << hand_score
+    score_array << self.base_score
   end
+
+  def base_score
+    if number_of_pairs > 0
+      self.most_highly_paired_card_score
+    elsif aces_low_straight?
+      self.card_rankings_sorted(ace_value: 1).max
+    else
+      self.card_rankings_sorted.max
+    end
+  end
+
+
+  # straights, flushes, high card all take the highest card as their second score (done)
+  # foak, toak, tp, p, full_house all take their most paired card as their second score
+  # kicker 1 foak, toak, p all take their next highest card
+  # kicker 1 full_house, two_pair, all take their second pair as the kicker
+  # kicker 2 two_pair takes its remaining card, toak take its remaining card, pair takes its second highest card
+  # kicker 3 pair takes its last card as final determination
 
   def suits
     suits = []
@@ -119,6 +156,14 @@ class Hand
       instances << arr[1]
     end
     instances.max
+  end
+
+  def most_highly_paired_card_score
+    card_occurances = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
+    max = card_occurances.max_by do |k, v|
+      v
+    end
+    self.individual_card_score(card: max[0])
   end
 
   def aces_low_straight?
