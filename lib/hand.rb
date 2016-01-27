@@ -1,31 +1,29 @@
 class Hand
   attr_accessor :cards, :suits, :values, :card_scores
-    def individual_card_score(card:, ace_value: 14)
-      card_rankings = {
-	"A" =>  ace_value,
-	"K" => 13,
-	"Q" =>  12,
-	"J" =>  11,
-	"T" =>  10,
-	"9" =>  9,
-	"8" => 8,
-	"7" => 7,
-	"6" => 6,
-	"5" => 5,
-	"4" => 4,
-	"3" => 3,
-	"2" => 2
-      }
-      card_rankings[card]
-    end
- 
+  
   def initialize(cards)
     @cards = cards
-    #@suits = self.suits
-    #@values = self.card_values
-    #@card_scores = self.card_scores
   end
 
+  def individual_card_score(card:, ace_value: 14)
+    card_rankings = {
+      "A" =>  ace_value,
+      "K" => 13,
+      "Q" =>  12,
+      "J" =>  11,
+      "T" =>  10,
+      "9" =>  9,
+      "8" => 8,
+      "7" => 7,
+      "6" => 6,
+      "5" => 5,
+      "4" => 4,
+      "3" => 3,
+      "2" => 2
+    }
+    card_rankings[card]
+  end
+ 
   def card_values
     values = []
     self.cards.each do |card|
@@ -102,20 +100,24 @@ class Hand
     end
   end
 
+  def sort_card_scores
+    self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+  end
+
   def card_score_of_strongest_pair
-    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    sorted_card_scores = sort_card_scores
     paired_card_scores = remove_uniques(sorted_card_scores) 
     paired_card_scores[0]
   end
 
   def card_score_of_second_strongest_pair
-    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    sorted_card_scores = sort_card_scores
     paired_card_scores = remove_uniques(sorted_card_scores) 
     paired_card_scores[1]
   end
 
   def card_score_of_all_free_cards
-    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    sorted_card_scores = sort_card_scores
     solo_card_scores = grab_solo_cards(sorted_card_scores) 
     
     solo_card_scores

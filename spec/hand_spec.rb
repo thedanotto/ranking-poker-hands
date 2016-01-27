@@ -157,6 +157,14 @@ describe Hand do
     end
   end
 
+  describe "#sort_card_scores" do
+    it "sorts hand scores in descending fashion" do
+      hand = Hand.new(%w(TC AC QC 9S 3S))
+
+      expect(hand.sort_card_scores).to eq([14, 12, 10, 9, 3])
+    end
+  end
+
   describe "#straight_flush?" do
     it "recognizes Straight Flushes!" do
       hand = Hand.new(cards(:straight_flush))
