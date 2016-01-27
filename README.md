@@ -1,7 +1,6 @@
 # Play Poker, by yourself, in Ruby.
 
-What you'll get...
-
+<a href="https://asciinema.org/a/7ap5p54bq8maaxi79bejzsj2f">See it in action!</a>
 
 
 Here's how...
