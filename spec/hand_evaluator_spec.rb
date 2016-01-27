@@ -77,6 +77,18 @@ describe HandEvaluator do
     it "breaks ties using side cards" do
       expect_higher "2D 2H 3D 4D 6D", "2C 2S 3S 4S 5S"
     end
+   
+    it "breaks two pair ties using side card" do
+      expect_higher "3H 3C 4D 4H 8C", "3S 3D 4C 4S 7C"
+    end
+
+    it "breaks pair ties using all side cards" do
+      expect_higher "3D 3H 4D 5D 6D", "3C 3S 2H 5C 6C"
+    end
+
+    it "breaks high card ties with kickers" do
+      expect_higher "TS 8C 7C 6C 4C", "TS 8C 7C 6C 3C"
+    end
   end
 
   def expect_higher(higher_string, lower_string)

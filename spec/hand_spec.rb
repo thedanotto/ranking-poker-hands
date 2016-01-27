@@ -132,7 +132,7 @@ describe Hand do
     it "returns value of highest card in high card" do
       high_card = Hand.new(cards(:high_card))
       # the test should really be [0, 13, 12, 10, 5, 4]
-      expect(high_card.hand_scores).to eq([0, 13, 13])
+      expect(high_card.hand_scores).to eq([0, 13, 13, 12, 10, 5, 4])
     end
 
     it "returns value of highest card in flush" do

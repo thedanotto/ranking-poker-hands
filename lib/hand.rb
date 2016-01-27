@@ -85,7 +85,7 @@ class Hand
     score_array << hand_score
     score_array << self.base_score
     score_array << self.kickers if self.kickers
-    score_array << self.kickers2 if self.kickers2
+    score_array = score_array + self.kickers2 if self.kickers2
     
     score_array
   end
@@ -114,10 +114,11 @@ class Hand
     paired_card_scores[1]
   end
 
-  def card_score_of_first_free_card
+  def card_score_of_all_free_cards
     sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
     solo_card_scores = grab_solo_cards(sorted_card_scores) 
-    solo_card_scores[0]
+    
+    solo_card_scores
   end
 
   def grab_solo_cards(arr)
@@ -146,7 +147,7 @@ class Hand
   def kickers2
     # this method should really repeat, and grab all the free cards and put them in the base score, but whatever, we'll add that test later...
     if two_pair? or pair? or high_card?
-      self.card_score_of_first_free_card
+      self.card_score_of_all_free_cards
     end
   end
 
