@@ -2,22 +2,6 @@ require "spec_helper"
 require "game"
 
 describe Game do
-  describe "#create_hand_objects" do
-    it "should turn the array of hand objects" do
-      new_game = Game.new
-      hand_objects = new_game.create_hand_objects(hands: [["AH", "AC"], ["QD","5C"]])
-      expect(hand_objects.first.cards).to eq(["AH", "AC"])
-    end
-  end
-
-  describe "#create_hands" do
-    it "should create an array with empty arrays equal to the number of players" do
-      new_game = Game.new
-      
-      expect(new_game.initiate_empty_hands).to eq([[],[]])
-    end
-  end
-
   describe "#evalute_winner" do
     it "should evaluate the winning hand, given two hands" do
       new_game = Game.new
@@ -28,19 +12,28 @@ describe Game do
     end
   end
 
-  describe "#fill_hands" do
-    it "should prepare hands equal to the number of players playing the game" do
-      new_game = Game.new
+  describe "#deal_cards" do
+    it "deals two hands" do
+      game = Game.new
+      deck = game.shuffled_deck
 
-      expect(new_game.fill_hands.count).to eq(2)
+      expect(game.deal_cards(deck).length).to eq(2)
+    end
+
+    it "deals 5 cards to each hand" do
+      game = Game.new
+      deck = Deck.new
+
+      expect(game.deal_cards(deck)[0].cards.length).to eq(5)
+      expect(game.deal_cards(deck)[1].cards.length).to eq(5)
     end
   end
 
-  describe "#prepare_deck" do
+  describe "#shuffled_deck" do
     it "should create a deck instance and shuffle it" do
       new_game = Game.new
       
-      expect(new_game.prepare_deck.cards.length).to eq(52)
+      expect(new_game.shuffled_deck.cards.length).to eq(52)
     end
   end
 end
