@@ -15,4 +15,8 @@ Here's how...
       The winning hand is a pair with the following cards ["JS", "TH", "8S", "6H", "6C"]
       The losing hand is a pair with the following cards ["7D", "QD", "3D", "3H", "9H"]
 
+Run the Test Suite
+    
+    $ rspec spec
+
 
