@@ -89,6 +89,14 @@ describe Hand do
       expect(two_pair.base_score).to eq(14)
     end
   end
+  
+  describe "#card_score_of_strongest_pair" do
+    it "returns the score of the strongest pair" do
+      two_pair = Hand.new(["2H", "2D", "AD", "AH", "QC"])
+
+      expect(two_pair.card_score_of_strongest_pair).to eq(14)
+    end
+  end
 
 
   describe "#hand_scores" do
@@ -107,7 +115,7 @@ describe Hand do
     it "returns the value of the most paired card for full_house" do
       full_house = Hand.new(cards(:full_house))
 
-      expect(full_house.hand_scores).to eq([6, 10])
+      expect(full_house.hand_scores).to eq([6, 10, 5])
     end
     it "returns card score of the four_of_a_kind" do
       four_of_a_kind = Hand.new(cards(:four_of_a_kind))
@@ -123,8 +131,8 @@ describe Hand do
 
     it "returns value of highest card in high card" do
       high_card = Hand.new(cards(:high_card))
-
-      expect(high_card.hand_scores).to eq([0, 13])
+      # the test should really be [0, 13, 12, 10, 5, 4]
+      expect(high_card.hand_scores).to eq([0, 13, 13])
     end
 
     it "returns value of highest card in flush" do

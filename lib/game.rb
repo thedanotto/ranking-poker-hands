@@ -47,8 +47,7 @@ class Game
   def evaluate_winner(hand1, hand2)
     # I want to decouple this from creating the hand objects
     # I want to pass in the hand objects
-    hands = self.create_hand_objects
-    hand_evaluation = HandEvaluator.new(hands[0], hands[1])
+    hand_evaluation = HandEvaluator.new(hand1, hand2)
     #hand_evaluation.winner
     #hand_evaluation.winner_hand
     #hand_evaluation.loser
@@ -61,11 +60,7 @@ class Game
     hands = self.create_hand_objects
     winning_hand = self.evaluate_winner(hands[0], hands[1])
     losing_hand = winning_hand == hands[0] ? hands[1] : hands[0]
-    if winning_hand == nil or losing_hand == nil
-    require 'pry'
-    binding.pry
-    end
-print_results(winning_hand, losing_hand)
+    print_results(winning_hand, losing_hand)
   end
 
   def print_results(winning_hand, losing_hand)

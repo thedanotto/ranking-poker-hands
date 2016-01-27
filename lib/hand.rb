@@ -84,11 +84,16 @@ class Hand
     score_array = []
     score_array << hand_score
     score_array << self.base_score
-    #score_array << self.kickers
+    score_array << self.kickers if self.kickers
+    score_array << self.kickers2 if self.kickers2
+    
+    score_array
   end
 
   def base_score
-    if number_of_pairs > 0
+    if two_pair?
+      self.card_score_of_strongest_pair
+    elsif number_of_pairs > 0
       self.most_highly_paired_card_score
     elsif aces_low_straight?
       self.card_rankings_sorted(ace_value: 1).max
@@ -97,11 +102,60 @@ class Hand
     end
   end
 
-  # there has to be a way to write a method that just does all the kickers for everything...
-  def kickers
-    
+  def card_score_of_strongest_pair
+    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    paired_card_scores = remove_uniques(sorted_card_scores) 
+    paired_card_scores[0]
   end
 
+  def card_score_of_second_strongest_pair
+    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    paired_card_scores = remove_uniques(sorted_card_scores) 
+    paired_card_scores[1]
+  end
+
+  def card_score_of_first_free_card
+    sorted_card_scores = self.card_scores.group_by {|x| x}.values.sort_by(&:max).reverse.flat_map {|i| i}
+    solo_card_scores = grab_solo_cards(sorted_card_scores) 
+    solo_card_scores[0]
+  end
+
+  def grab_solo_cards(arr)
+    # removes unique  values from an array
+    arr.uniq.select do |uniq_value|
+      arr.count(uniq_value) == 1
+    end  
+  end  
+
+   
+
+  # there has to be a way to write a method that just does all the kickers for everything...
+  # every hand should be a class, right?
+  def kickers
+    if two_pair?
+      self.card_score_of_second_strongest_pair
+    elsif full_house?
+      self.card_score_of_second_pair
+    end
+  end
+
+  def card_score_of_second_pair
+    self.card_scores.group_by{|x| x}.values.sort_by(&:length).flat_map {|i| i}[0]
+  end
+
+  def kickers2
+    # this method should really repeat, and grab all the free cards and put them in the base score, but whatever, we'll add that test later...
+    if two_pair? or pair? or high_card?
+      self.card_score_of_first_free_card
+    end
+  end
+
+  def remove_uniques(arr)
+    # removes unique  values from an array
+    arr.uniq.select do |uniq_value|
+      arr.count(uniq_value) > 1
+    end  
+  end  
 
   # straights, flushes, high card all take the highest card as their second score (done)
   # foak, toak, tp, p, full_house all take their most paired card as their second score
@@ -155,7 +209,7 @@ class Hand
   end 
 
   def high_card?
-    true 
+    number_of_pairs == 0 && !flush? && !straight?
   end 
 
   def number_of_pairs
