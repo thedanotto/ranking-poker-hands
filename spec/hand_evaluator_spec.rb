@@ -85,9 +85,7 @@ describe HandEvaluator do
     higher_hand = Hand.new(higher)
     lower_hand = Hand.new(lower)
     
-    expect(HandEvaluator.new("", "").return_stronger_hand(hand1: higher_hand, hand2: lower_hand)).
-      to eq(higher_hand)
-    expect(HandEvaluator.new("", "").return_stronger_hand(hand1: lower_hand, hand2: higher_hand)).
-      to eq(higher_hand)
+    expect(HandEvaluator.new(higher_hand, lower_hand).return_stronger_hand).to eq(higher_hand)
+    expect(HandEvaluator.new(lower_hand, higher_hand).return_stronger_hand).to eq(higher_hand)
   end
 end

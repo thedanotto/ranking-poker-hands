@@ -1,5 +1,7 @@
 class HandEvaluator
+  include Comparable
   require_relative 'hand'
+  # I want to put all evaluation of the hand in HandEvalutor, it is only 
 
   attr_accessor :hand1, :hand2
 
@@ -10,18 +12,15 @@ class HandEvaluator
 
   end
 
-  def return_stronger_hand(hand1: self.hand1, hand2: self.hand2)
-    if hand1.hand_scores[0] > hand2.hand_scores[0]
+  def compare_hands
+    hand1.hand_scores <=> hand2.hand_scores
+  end
+
+  def return_stronger_hand
+    if compare_hands == 1 
       return hand1
-    elsif hand2.hand_scores[0] > hand1.hand_scores[0]
-      return hand2
-    elsif hand1.hand_scores[1] > hand2.hand_scores[1]
-      return hand1
-    elsif hand2.hand_scores[1] > hand1.hand_scores[1]
-      return hand2
     else
-      # haven't figured out the kickers quite yet...
-      return hand1
+      return hand2
     end
   end
 end

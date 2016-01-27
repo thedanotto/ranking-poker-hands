@@ -56,6 +56,41 @@ describe Hand do
     end
   end
 
+  describe "#card_scores" do
+    it "returns the individual score of each card in the hand" do
+      hand = Hand.new(["AH", "QC"])
+
+      expect(hand.card_scores).to eq([14, 12])
+    end
+  end
+
+  describe "#base_score" do
+    it "should return the card score of the paired card" do
+      pair = Hand.new(cards(:pair))
+
+      expect(pair.base_score).to eq(13)
+    end
+
+    it "should return the card score of the paird card even if it is lower than the kicker" do
+      pair = Hand.new(["AH", "2D", "2C", "3C", "4D"])
+
+      expect(pair.base_score).to eq(2)
+    end
+
+    it "returns highest pair, even if the higher pair comes later" do
+      two_pair = Hand.new(["2H", "2D", "AD", "AH", "QC"])
+
+      expect(two_pair.base_score).to eq(14)
+    end
+
+    it "returns the highest pair of the two pair" do
+      two_pair = Hand.new(["AD", "AH", "2D", "2D", "QC"])
+
+      expect(two_pair.base_score).to eq(14)
+    end
+  end
+
+
   describe "#hand_scores" do
     it "should return [] with the hand_score inside" do
       straight_flush = Hand.new(cards(:straight_flush))

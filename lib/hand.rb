@@ -1,26 +1,29 @@
 class Hand
-  attr_accessor :cards
+  attr_accessor :cards, :suits, :values, :card_scores
     def individual_card_score(card:, ace_value: 14)
-    card_rankings = {
-      "A" =>  ace_value,
-      "K" => 13,
-      "Q" =>  12,
-      "J" =>  11,
-      "T" =>  10,
-      "9" =>  9,
-      "8" => 8,
-      "7" => 7,
-      "6" => 6,
-      "5" => 5,
-      "4" => 4,
-      "3" => 3,
-      "2" => 2
-    }
-    card_rankings[card]
+      card_rankings = {
+	"A" =>  ace_value,
+	"K" => 13,
+	"Q" =>  12,
+	"J" =>  11,
+	"T" =>  10,
+	"9" =>  9,
+	"8" => 8,
+	"7" => 7,
+	"6" => 6,
+	"5" => 5,
+	"4" => 4,
+	"3" => 3,
+	"2" => 2
+      }
+      card_rankings[card]
     end
  
   def initialize(cards)
     @cards = cards
+    #@suits = self.suits
+    #@values = self.card_values
+    #@card_scores = self.card_scores
   end
 
   def card_values
@@ -29,6 +32,14 @@ class Hand
       values << card[0]
     end
     return values
+  end
+
+  def card_scores
+    card_scores = []
+    self.card_values.each do |card|
+      card_scores << individual_card_score(card: card)
+    end
+    return card_scores
   end
 
   def hand_type
@@ -73,7 +84,7 @@ class Hand
     score_array = []
     score_array << hand_score
     score_array << self.base_score
-    #score_array << self.kicker
+    #score_array << self.kickers
   end
 
   def base_score
@@ -87,7 +98,8 @@ class Hand
   end
 
   # there has to be a way to write a method that just does all the kickers for everything...
-  def kicker
+  def kickers
+    
   end
 
 
@@ -163,12 +175,14 @@ class Hand
     instances.max
   end
 
+
   def most_highly_paired_card_score
     card_occurances = self.card_values.each_with_object(Hash.new(0)) { |card, counts| counts[card] += 1 }
     # grabs the ["card_value", "occurances"]
     max = card_occurances.max_by do |k, v|
       v
     end
+
     self.individual_card_score(card: max[0])
   end
 
