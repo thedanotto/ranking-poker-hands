@@ -6,7 +6,7 @@ class Hand
   end
 
   # Utility Methods
-  def individual_card_score(card:, ace_value: 14)
+  def individual_card_score(card:"A", ace_value: 14)
     card_rankings = {
       "A" =>  ace_value,
       "K" => 13,
